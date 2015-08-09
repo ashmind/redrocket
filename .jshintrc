@@ -1,0 +1,20 @@
+{
+  "browser": true,
+  "globals": {
+    "define":  false,
+    "require": false,
+    "Promise": false,
+    "fetch":   false
+  },
+  "esnext":    true,
+  "eqeqeq":    true,
+  "indent":    2,
+  "noempty":   true,
+  "nonew":     true,
+  "quotmark":  true,
+  "undef":     true,
+  "unused":    true,
+  "trailing":  true,
+  "laxbreak":  true,
+  "curly":     false
+}
