@@ -50,7 +50,7 @@ function render($ul, posts) {
         $ul.append(`<li class='post'>
           <div class='post-attention' title='${post.attention}'>${post.attention.toFixed(1)}</div>
           <div class='post-info'>
-            <a href='${post.url}' class='post-title'>${post.title}</a>
+            <a href='${post.url}' class='post-title' target='_blank'>${post.title}</a>
             <div class='post-details'>
               <span>Scored ${post.score}</span>
               with
@@ -72,6 +72,7 @@ function notify(posts) {
             if (permission === 'granted')
                 notify(posts);
         });
+        return;
     }
 
     for (let post of posts) {
