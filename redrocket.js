@@ -20,7 +20,7 @@ function getNewPosts(subreddit, limit) {
 
 function getAttention(post) {
     return (post.score - 1) / (
-        (2.5 * Math.pow(2, post.age.asHours()))
+        (2.5 * Math.pow(2.1, post.age.asHours()))
         *
         (1 + Math.max(post.commentCount - 3, 0))
     );
@@ -31,7 +31,7 @@ function evaluatePosts(posts) {
         post.attention = getAttention(post);
     }
 
-    posts = posts.filter(p => p.attention >= 0.1);
+    posts = posts.filter(p => p.attention >= 0.3);
     posts.sort((p1, p2) => {
         if (p1.attention > p2.attention)
             return -1;
