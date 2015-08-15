@@ -1,6 +1,7 @@
 import 'whatwg-fetch';
 import $ from 'jquery';
 import moment from 'moment';
+import TextIconGenerator from './TextIconGenerator';
 
 function getNewPosts(subreddit, limit) {
     return fetch(`https://www.reddit.com/r/${subreddit}/new.json?limit=${limit}`)
@@ -62,6 +63,11 @@ function render($ul, posts) {
     }
 }
 
+let iconGenerator = new TextIconGenerator({
+    size: 64,
+    padding: 8,
+    fontFamily: "'Open Sans', sans-serif"
+});
 let notified = {};
 function notify(posts) {
     if (Notification.permission === 'denied')
@@ -76,14 +82,15 @@ function notify(posts) {
     }
 
     for (let post of posts) {
-        if (post.attention < 1)
+        if (post.attention < 1.0)
             continue;
 
         if (notified[post.url] && notified[post.url] - post.attention < 1)
             continue;
 
         let notification = new Notification('RedRocket', {
-            body: post.attention.toFixed(1) + ': ' + post.title
+            body: post.title,
+            icon: iconGenerator.generate(post.attention.toFixed(1), 'white', '#AF1313')
         });
         notified[post.url] = post.attention;
         notification.onclick = () => {
