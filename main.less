@@ -1,12 +1,14 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
+@color-normal: #af1313;
+@color-mod-choice: #e99e19;
+
 body {
   font-family: 'Open Sans', sans-serif;
 }
 
 a {
   text-decoration: none;
-  color: #AF1313;
 }
 
 ul {
@@ -19,10 +21,10 @@ li {
 
 .post {
   display: flex;
-}
-
-.post + .post {
-  margin-top: 10px;
+  
+  & + & {
+    margin-top: 10px;
+  }
 }
 
 .post-attention {
@@ -32,10 +34,14 @@ li {
   padding: 0px 10px;
   flex: 0 0 auto;
 
-  background-color: #AF1313;
+  background-color: @color-normal;
   color: #fff;
 
   border-radius: 3px;
+  
+  .mod-choice & {
+    background-color: @color-mod-choice;
+  }
 }
 
 .post-info {
@@ -43,4 +49,9 @@ li {
 
 .post-title {
   font-size: 150%;
+  color: @color-normal;
+  
+  .mod-choice & {
+    color: @color-mod-choice;
+  }
 }

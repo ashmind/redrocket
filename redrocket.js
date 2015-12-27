@@ -14,17 +14,15 @@ function getNewPosts(subreddit, limit) {
                 commentCount: c.data.num_comments,
                 created: created,
                 age: moment.duration(moment.utc() - created),
-                url: `https://www.reddit.com/${c.data.permalink}`
+                url: `https://www.reddit.com/${c.data.permalink}`,
+                isModChoice: /(\s|^)mc($|\s)/.test(c.data.link_flair_css_class)
             };
         }));
 }
 
 function getAttention(post) {
-    return (post.score - 1) / (
-        (2.5 * Math.pow(2.1, post.age.asHours()))
-        *
-        (1 + Math.max(post.commentCount - 3, 0))
-    );
+    return (post.score - 1) / (2.5 * Math.pow(2.1, post.age.asHours())) -
+           4 * Math.max(post.commentCount - 2, 0) / post.score;
 }
 
 function evaluatePosts(posts) {
@@ -48,7 +46,7 @@ function evaluatePosts(posts) {
 function render($ul, posts) {
     $ul.empty();
     for (let post of posts) {
-        $ul.append(`<li class='post'>
+        $ul.append(`<li class='post${post.isModChoice ? ' mod-choice' : ''}'>
           <div class='post-attention' title='${post.attention}'>${post.attention.toFixed(1)}</div>
           <div class='post-info'>
             <a href='${post.url}' class='post-title' target='_blank'>${post.title}</a>
@@ -90,7 +88,7 @@ function notify(posts) {
 
         let notification = new Notification('RedRocket', {
             body: post.title,
-            icon: iconGenerator.generate(post.attention.toFixed(1), 'white', '#AF1313')
+            icon: iconGenerator.generate(post.attention.toFixed(1), 'white', post.isModChoice ? '#e99e19' : '#af1313')
         });
         notified[post.url] = post.attention;
         notification.onclick = () => {
